@@ -6,6 +6,16 @@ import {message} from 'antd'
 export const reqLogin = (username, password) => ajax('/login',{username,password},'POST')
 
 /**
+ * 获取商品一级分类
+ */
+export const reqCategory = (parentId) =>ajax('/manage/category/list',parentId)
+
+// 修改商品分类
+export const reqUpdateCategory = (categoryId,categoryName) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
+
+// 添加商品分类
+export const reqAddCategory = (parentId,categoryName)=> ajax('/manage/category/add',{parentId,categoryName},'POST')
+/**
  * json请求的接口函数
  */
 export const reqWeather = (city)=>{
