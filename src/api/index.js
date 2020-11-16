@@ -8,7 +8,7 @@ export const reqLogin = (username, password) => ajax('/login',{username,password
 /**
  * 获取商品一级分类
  */
-export const reqCategory = (parentId) =>ajax('/manage/category/list',parentId)
+export const reqCategory = (parentId) =>ajax('/manage/category/list',{parentId})
 
 // 修改商品分类
 export const reqUpdateCategory = (categoryId,categoryName) => ajax('/manage/category/update',{categoryId,categoryName},'POST')
