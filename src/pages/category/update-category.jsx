@@ -48,13 +48,28 @@ export default class UpdateCategory extends Component {
     componentDidMount () {
         // 将form对象通过setForm()传递父组件
         const form = this.formRef.current
+        // 尝试修改每次的修改
+        
         // console.log("这是form",form)
-        this.props.setForm(form)
+        this.props.setForm(form) 
     }
+
+    shouldComponentUpdate(nextProps,nextState){
+        if(nextProps.categoryName!=this.props.categoryName){
+            // console.log("应该更新一下")
+            // console.log("props",nextProps)
+            // const {categoryName} = this.props
+            // console.log("分类",categoryName)
+            this.formRef.current.setFieldsValue({'categoryName':nextProps.categoryName});
+            return true
+        }else{
+            return false
+        }
+   }
     
     render() {
-        const {categoryName} = this.props
-        console.log("分类",categoryName)
+       
+        
         return (
             <Form
             ref={this.formRef}
