@@ -2,10 +2,12 @@
 商品品类管理
 */
 import React, { Component } from 'react'
-import {Button,Card,Table,message} from 'antd'
+import {Button,Card,Table,message,Modal} from 'antd'
 import {PlusOutlined,ArrowRightOutlined} from '@ant-design/icons'
 import LinkButton from '../../components/link-button/link-button'
 import {reqCategory,reqAddCategory,reqUpdateCategory} from '../../api/index'
+import AddCategory from './add-category'
+import UpdateCategory from './update-category'
 
 export default class Category extends Component {
     state = {
@@ -13,7 +15,8 @@ export default class Category extends Component {
         categorys:[],
         subCategorys:[],
         parentId: '0', // 当前需要显示的分类列表的父分类ID
-        parentName:'' // 当前需要显示的分类列表的父分类名称
+        parentName:'', // 当前需要显示的分类列表的父分类名称
+        showState:0 // 0都不显示,1显示添加一级分类，2显示添加二级分类
     }
     initColums = ()=>{
         this.columns = [
@@ -27,7 +30,7 @@ export default class Category extends Component {
                 title: '操作',
                 render:(category)=>(
                   <span>
-                      <LinkButton>修改分类</LinkButton>
+                      <LinkButton onClick={()=>this.showAddSubCatory(category)}>修改分类</LinkButton>
                       {this.state.parentId==='0'?<LinkButton onClick={()=>this.showSubCategorys(category)}>查看子分类</LinkButton>:null}
                       
                   </span>
@@ -81,6 +84,7 @@ export default class Category extends Component {
         })
 
     }
+
     showCategorys = ()=>{
         // 显示父列表
         this.setState({
@@ -88,6 +92,51 @@ export default class Category extends Component {
             subCategorys:[],
             parentName:''
         })
+    }
+
+    addCategory = ()=>{
+        console.log("addCategory()")
+    }
+
+    updateSubCategory= async ()=>{
+        console.log("updateSubCategory()")
+        console.log("form",this.form)
+        const values = await this.form.validateFields(['categoryName'])
+        console.log("取出来表单的value",values)
+        // 1. 隐藏确定框
+        this.setState({
+            showState: 0
+        })
+
+        // 准备数据
+        const categoryId = this.category._id
+        const {categoryName} = values || ''
+        // 清除输入数据
+        this.form.resetFields()
+
+        // 2. 发请求更新分类
+        const result = await reqUpdateCategory(categoryId, categoryName)
+        if (result.status===0) {
+        // 3. 重新显示列表
+            console.log("成功了",result)
+            this.getCategorys()
+        }
+
+    }
+
+    showAdd = ()=>{
+        this.setState({showState:1})
+    }
+
+    showAddSubCatory = (category)=>{
+        // 将category交给this
+        this.category = category
+        // 更新状态显示
+        this.setState({showState:2})
+    }
+
+    handleCancel =()=>{
+        this.setState({showState:0})
     }
 
     componentWillMount(){
@@ -99,7 +148,10 @@ export default class Category extends Component {
     }
 
     render() {
-        const {categorys,loading,subCategorys,parentId,parentName} = this.state
+        const {categorys,loading,subCategorys,parentId,parentName,showState} = this.state
+        // 读取指定的分类
+        const category = this.category || {} // 如果还没有指定一个空对象
+
         const title = parentId==='0'?"一级分类列表":(
             <span>
                 <LinkButton onClick={this.showCategorys}>一级分类列表</LinkButton>
@@ -108,7 +160,7 @@ export default class Category extends Component {
             </span>  
         )
         const extra = (
-            <Button type='primary'>
+            <Button type='primary' onClick={this.showAdd}>
                 <span>
                     <PlusOutlined />
                     添加
@@ -125,8 +177,30 @@ export default class Category extends Component {
                 dataSource={parentId==='0' ? categorys : subCategorys}
                 pagination={{defaultPageSize: 5, showQuickJumper: true}}
                 />;
-            </Card>
+                <Modal
+                    title="一级分类"
+                    visible={showState===1}
+                    onOk={this.addCategory}
+                    onCancel={this.handleCancel}
+                >
+                    <AddCategory/>
+                    
+                </Modal>
+
+                <Modal
+                    title="更新分类"
+                    visible={showState===2}
+                    onOk={this.updateSubCategory}
+                    onCancel={this.handleCancel}
+                >
+                    <UpdateCategory 
+                    categoryName={category.name}
+                    setForm={(form) => {this.form = form}}
+                    />
+                </Modal>
            
+            </Card>
+             
         )
     }
 }
