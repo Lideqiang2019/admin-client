@@ -45,16 +45,16 @@ export default class Category extends Component {
     异步获取一级/二级分类列表显示
     parentId: 如果没有指定根据状态中的parentId请求, 如果指定了根据指定的请求
     */
-    getCategorys = async ()=>{
+    getCategorys = async (parentId)=>{
          // 在发请求前, 显示loading
         this.setState({
             loading:true
         })
-        const {parentId} = this.state
+        parentId = parentId || this.state.parentId // 如果有传入参数则parentId为形参值，否则为state中的parentId
         const result = await reqCategory(parentId)
         // 在请求完成后, 隐藏loading
         this.setState({loading: false})
-        console.log("parentId",parentId)
+        // console.log("parentId",parentId)
         if(result.status===0){
             // 取出分类数组(可能是一级也可能二级的)
             const categorys = result.data
@@ -94,8 +94,29 @@ export default class Category extends Component {
         })
     }
 
-    addCategory = ()=>{
+    addCategory = async ()=>{
         console.log("addCategory()")
+        // 修改state状态为隐藏
+        this.setState({showState:0})
+        // 获取表单数据
+        const values = await this.form.validateFields(['parentId','categoryName'])
+        // 收集数据, 并提交添加分类的请求
+        const {parentId, categoryName} = values
+        // console.log("re0",values)
+        // 每次添加完成的时候，只需将categoryName清除即可，保留parentId，以保留父分类
+        this.form.resetFields(['categoryName'])
+        const result = await reqAddCategory(parentId,categoryName)
+        // 更新数据
+        // console.log("result",result)
+        if(result.status===0){
+            // 添加的分类就是当前分类列表下的分类
+            if(parentId===this.state.parentId){
+                // 在一级分类列表下，添加后需要更新列表
+                this.getCategorys()
+            }else if(parentId==='0'){// 在二级分类列表下添加一级分类, 重新获取一级分类列表, 但不需要显示一级列表
+                this.getCategorys('0')
+            }
+        }
     }
 
     updateSubCategory= async ()=>{
@@ -110,7 +131,7 @@ export default class Category extends Component {
 
         // 准备数据
         const categoryId = this.category._id
-        const {categoryName} = values || ''
+        const {categoryName} = values
         // 清除输入数据
         this.form.resetFields()
 
@@ -176,14 +197,18 @@ export default class Category extends Component {
                 loading={loading}
                 dataSource={parentId==='0' ? categorys : subCategorys}
                 pagination={{defaultPageSize: 5, showQuickJumper: true}}
-                />;
+                />
                 <Modal
                     title="一级分类"
                     visible={showState===1}
                     onOk={this.addCategory}
                     onCancel={this.handleCancel}
                 >
-                    <AddCategory/>
+                    <AddCategory 
+                    categorys={categorys}
+                    parentId={parentId}
+                    setForm={(form) => {this.form = form}}
+                    />
                     
                 </Modal>
 
