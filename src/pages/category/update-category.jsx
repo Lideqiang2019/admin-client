@@ -2,7 +2,7 @@
 用户登陆的路由组件
 */
 import React, { Component } from 'react'
-import {Form,Input} from 'antd'
+import {Form,Input,message} from 'antd'
 import PropTypes from 'prop-types'
 
 
@@ -54,7 +54,6 @@ export default class UpdateCategory extends Component {
                 rules={[
                     {required: true, message: '分类名称必须输入'}
                 ]}
-                noStyle
                 >
                     <Input placeholder="请输入分类名称" 
                     ></Input>

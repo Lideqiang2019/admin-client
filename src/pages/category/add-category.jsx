@@ -53,7 +53,12 @@ export default class AddCategory extends Component {
                         {categorys.map((c)=><Option value={c._id}>{c.name}</Option>)}
                     </Select>
                 </Item>
-                <Item name='categoryName'>
+                <Item 
+                name='categoryName'
+                rules={[
+                    {required: true, message: '分类名称必须输入'}
+                ]}
+                >
                     <Input placeholder="请输入分类名称"></Input>
                 </Item>
             </Form>
