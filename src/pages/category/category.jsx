@@ -5,7 +5,7 @@ import React, { Component } from 'react'
 import { Button, Card, Table, message, Modal } from 'antd'
 import { PlusOutlined, ArrowRightOutlined } from '@ant-design/icons'
 import LinkButton from '../../components/link-button/link-button'
-import { reqCategory, reqAddCategory, reqUpdateCategory } from '../../api/index'
+import { reqCategorys, reqAddCategory, reqUpdateCategory } from '../../api/index'
 import AddCategory from './add-category'
 import UpdateCategory from './update-category'
 
@@ -34,7 +34,7 @@ export default class Category extends Component {
                         {this.state.parentId === '0' ? <LinkButton onClick={() => this.showSubCategorys(category)}>查看子分类</LinkButton> : null}
 
                     </span>
-                )
+                )  
             },
 
         ];
@@ -51,7 +51,7 @@ export default class Category extends Component {
             loading: true
         })
         parentId = parentId || this.state.parentId // 如果有传入参数则parentId为形参值，否则为state中的parentId
-        const result = await reqCategory(parentId)
+        const result = await reqCategorys(parentId)
         // 在请求完成后, 隐藏loading
         this.setState({ loading: false })
         // console.log("parentId",parentId)

@@ -1,113 +1,155 @@
 import React, { Component } from 'react'
 import { Link,withRouter } from 'react-router-dom'
 import { Menu } from 'antd';
-import {
-    HomeOutlined,
-    AppstoreOutlined,
-    BarsOutlined,
-    ToolOutlined,
-    UserOutlined,
-    SafetyOutlined,
-    AreaChartOutlined,
-    BarChartOutlined,
-    LineChartOutlined,
-    PieChartOutlined,
-    WindowsOutlined
-} from '@ant-design/icons';
 import menuList from '../../config/menuConfig'
 import './left-nav.less'
 import logo from '../../assets/images/logo.png'
 const { SubMenu } = Menu;
 
 class LeftNav extends Component {
+    // getMenuNodes = (menuList)=>{
+    //     return menuList.map((item)=>{
+    //         if(!item.children){
+    //             switch (item.icon) {
+    //                 case 'HomeOutlined':
+    //                     return(
+    //                         <Menu.Item key={item.key}>
+    //                         <Link to={item.key}>
+    //                             <HomeOutlined/>
+    //                           <span>{item.title}</span>
+    //                         </Link>
+    //                       </Menu.Item>
+    //                     )
+    //                 case 'BarsOutlined':
+    //                     return(
+    //                         <Menu.Item key={item.key}>
+    //                         <Link to={item.key}>
+    //                             <BarsOutlined/>
+    //                           <span>{item.title}</span>
+    //                         </Link>
+    //                       </Menu.Item>
+    //                     )
+    //                 case 'ToolOutlined':
+    //                     return(
+    //                         <Menu.Item key={item.key}>
+    //                         <Link to={item.key}>
+    //                             <ToolOutlined/>
+    //                             <span>{item.title}</span>
+    //                         </Link>
+    //                         </Menu.Item>
+    //                     )
+    //                 case 'UserOutlined':
+    //                     return(
+    //                         <Menu.Item key={item.key}>
+    //                         <Link to={item.key}>
+    //                             <UserOutlined/>
+    //                             <span>{item.title}</span>
+    //                         </Link>
+    //                         </Menu.Item>
+    //                     )
+    //                 case 'SafetyOutlined':
+    //                     return(
+    //                         <Menu.Item key={item.key}>
+    //                         <Link to={item.key}>
+    //                             <SafetyOutlined/>
+    //                             <span>{item.title}</span>
+    //                         </Link>
+    //                         </Menu.Item>
+    //                     )
+    //                     case 'BarChartOutlined':
+    //                         return(
+    //                             <Menu.Item key={item.key}>
+    //                             <Link to={item.key}>
+    //                                 <BarChartOutlined/>
+    //                                 <span>{item.title}</span>
+    //                             </Link>
+    //                             </Menu.Item>
+    //                         )
+    //                     case 'LineChartOutlined':
+    //                         return(
+    //                             <Menu.Item key={item.key}>
+    //                             <Link to={item.key}>
+    //                                 <LineChartOutlined/>
+    //                                 <span>{item.title}</span>
+    //                             </Link>
+    //                             </Menu.Item>
+    //                         )
+    //                     case 'PieChartOutlined':
+    //                         return(
+    //                             <Menu.Item key={item.key}>
+    //                             <Link to={item.key}>
+    //                                 <PieChartOutlined/>
+    //                                 <span>{item.title}</span>
+    //                             </Link>
+    //                             </Menu.Item>
+    //                         )
+                        
+    //                 default:
+    //                     return(
+    //                         <Menu.Item key={item.key}>
+    //                         <Link to={item.key}>
+    //                             <WindowsOutlined/>
+    //                           <span>{item.title}</span>
+    //                         </Link>
+    //                       </Menu.Item>
+    //                     )
+    //             }
+                
+    //         }else{
+    //             // 查找一个与当前请求路径匹配的子Item
+    //             const pathname = this.props.location.pathname;
+    //             const cItem = item.children.find(cItem=>cItem.key===pathname)
+    //             // 如果存在, 说明当前item的子列表需要打开
+    //             if (cItem) {
+    //                 this.openKey = item.key
+    //             }
+    //             switch (item.icon) {
+    //                 case 'AppstoreOutlined':
+    //                     return(
+    //                         <SubMenu
+    //                         key={item.key}
+    //                         title={
+    //                         <span>
+    //                             <AppstoreOutlined />
+    //                             <span>{item.title}</span>
+    //                         </span>
+    //                         }
+    //                     >
+    //                         {this.getMenuNodes(item.children)}
+    //                     </SubMenu>
+    //                     )
+    //                 case 'AreaChartOutlined':
+    //                     return(
+    //                         <SubMenu
+    //                         key={item.key}
+    //                         title={
+    //                         <span>
+    //                             <AreaChartOutlined />
+    //                             <span>{item.title}</span>
+    //                         </span>
+    //                         }
+    //                     >
+    //                         {this.getMenuNodes(item.children)}
+    //                     </SubMenu>
+    //                     )
+    //                 default:
+    //                     break;
+    //             }
+                
+    //         }
+    //     })
+    // }
     getMenuNodes = (menuList)=>{
         return menuList.map((item)=>{
             if(!item.children){
-                switch (item.icon) {
-                    case 'HomeOutlined':
-                        return(
-                            <Menu.Item key={item.key}>
-                            <Link to={item.key}>
-                                <HomeOutlined/>
-                              <span>{item.title}</span>
-                            </Link>
-                          </Menu.Item>
-                        )
-                    case 'BarsOutlined':
-                        return(
-                            <Menu.Item key={item.key}>
-                            <Link to={item.key}>
-                                <BarsOutlined/>
-                              <span>{item.title}</span>
-                            </Link>
-                          </Menu.Item>
-                        )
-                    case 'ToolOutlined':
-                        return(
-                            <Menu.Item key={item.key}>
-                            <Link to={item.key}>
-                                <ToolOutlined/>
-                                <span>{item.title}</span>
-                            </Link>
-                            </Menu.Item>
-                        )
-                    case 'UserOutlined':
-                        return(
-                            <Menu.Item key={item.key}>
-                            <Link to={item.key}>
-                                <UserOutlined/>
-                                <span>{item.title}</span>
-                            </Link>
-                            </Menu.Item>
-                        )
-                    case 'SafetyOutlined':
-                        return(
-                            <Menu.Item key={item.key}>
-                            <Link to={item.key}>
-                                <SafetyOutlined/>
-                                <span>{item.title}</span>
-                            </Link>
-                            </Menu.Item>
-                        )
-                        case 'BarChartOutlined':
-                            return(
-                                <Menu.Item key={item.key}>
-                                <Link to={item.key}>
-                                    <BarChartOutlined/>
-                                    <span>{item.title}</span>
-                                </Link>
-                                </Menu.Item>
-                            )
-                        case 'LineChartOutlined':
-                            return(
-                                <Menu.Item key={item.key}>
-                                <Link to={item.key}>
-                                    <LineChartOutlined/>
-                                    <span>{item.title}</span>
-                                </Link>
-                                </Menu.Item>
-                            )
-                        case 'PieChartOutlined':
-                            return(
-                                <Menu.Item key={item.key}>
-                                <Link to={item.key}>
-                                    <PieChartOutlined/>
-                                    <span>{item.title}</span>
-                                </Link>
-                                </Menu.Item>
-                            )
-                        
-                    default:
-                        return(
-                            <Menu.Item key={item.key}>
-                            <Link to={item.key}>
-                                <WindowsOutlined/>
-                              <span>{item.title}</span>
-                            </Link>
-                          </Menu.Item>
-                        )
-                }
-                
+               return(
+                    <Menu.Item key={item.key}>
+                    <Link to={item.key}>
+                        <item.icon1/>
+                        <span>{item.title}</span>
+                    </Link>
+                    </Menu.Item>
+                )
             }else{
                 // 查找一个与当前请求路径匹配的子Item
                 const pathname = this.props.location.pathname;
@@ -116,38 +158,21 @@ class LeftNav extends Component {
                 if (cItem) {
                     this.openKey = item.key
                 }
-                switch (item.icon) {
-                    case 'AppstoreOutlined':
-                        return(
-                            <SubMenu
-                            key={item.key}
-                            title={
-                            <span>
-                                <AppstoreOutlined />
-                                <span>{item.title}</span>
-                            </span>
-                            }
-                        >
-                            {this.getMenuNodes(item.children)}
-                        </SubMenu>
-                        )
-                    case 'AreaChartOutlined':
-                        return(
-                            <SubMenu
-                            key={item.key}
-                            title={
-                            <span>
-                                <AreaChartOutlined />
-                                <span>{item.title}</span>
-                            </span>
-                            }
-                        >
-                            {this.getMenuNodes(item.children)}
-                        </SubMenu>
-                        )
-                    default:
-                        break;
-                }
+                return(
+                    
+                        <SubMenu
+                        key={item.key}
+                        title={
+                        <span>
+                            <item.icon1 />
+                            <span>{item.title}</span>
+                        </span>
+                        }
+                    >
+                        {this.getMenuNodes(item.children)}
+                    </SubMenu>
+                    )
+               
                 
             }
         })
