@@ -19,11 +19,16 @@ export const reqAddCategory = (parentId,categoryName)=> ajax('/manage/category/a
 export const reqProducts = (pageNum,pageSize)=>ajax('/manage/product/list',{pageNum,pageSize})
 
 // 获取商品的搜索结果, searchType：搜索的类型，productName/ProductDesc
-export const reqSearchProducts = ({pageNum,pageSize,searchName,searchType})=>ajax("/manage/product/search",
-    {
-        pageNum,
-        pageSize,
-        [searchType]:searchName,
+// export const reqSearchProducts = ({pageNum,pageSize,searchName,searchType})=>ajax("/manage/product/search",
+//     {
+//         pageNum,
+//         pageSize,
+//         [searchType]:searchName,
+//     })
+export const reqSearchProducts = ({pageNum, pageSize, searchName, searchType}) => ajax('/manage/product/search', {
+    pageNum,
+    pageSize,
+    [searchType]: searchName,
     })
 
 // 获取一个分类

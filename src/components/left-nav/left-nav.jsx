@@ -153,7 +153,9 @@ class LeftNav extends Component {
             }else{
                 // 查找一个与当前请求路径匹配的子Item
                 const pathname = this.props.location.pathname;
-                const cItem = item.children.find(cItem=>cItem.key===pathname)
+                // const cItem = item.children.find(cItem=>cItem.key===pathname)此为精准匹配，
+                //对于/product来说，其子路由/product/details也应该选中
+                const cItem = item.children.find(cItem=>pathname.indexOf(cItem.key)===0)
                 // 如果存在, 说明当前item的子列表需要打开
                 if (cItem) {
                     this.openKey = item.key
@@ -185,8 +187,11 @@ class LeftNav extends Component {
         this.menuNodes = this.getMenuNodes(menuList);
     }
     render() {
-        const pathname = this.props.location.pathname;
+        let pathname = this.props.location.pathname;
         const openKey = this.openKey;
+        if(pathname.indexOf("/product")===0){
+            pathname = "/product"
+        }
         return (
             <div className='left-nav'>
                 <Link to='/' className='logo-link'>

@@ -92,11 +92,13 @@ export default class ProductHome extends Component {
         this.pageNum = pageNum // 保存pageNum, 让其它方法可以看到
         this.setState({loading:true}) // 正在加载
         const {searchName,searchType} = this.state
+        console.log("search",searchName,searchType)
         let result;
         if(searchName){
             // 如果有要搜索的内容
-            result = await reqSearchProducts({pageNum,pageSize:PAGE_SIZE,searchName,searchType})
-            // console.log("result",result)
+            // result = await reqSearchProducts({pageNum,pageSize:PAGE_SIZE,searchName,searchType})
+            result = await reqSearchProducts({pageNum, pageSize: PAGE_SIZE, searchName, searchType})
+            console.log("result",result)
             // debugger
         }else{
             result = await reqProducts(pageNum,PAGE_SIZE)
@@ -126,8 +128,9 @@ export default class ProductHome extends Component {
                 style={{width:'150px'}}
                 onChange={value=>this.setState({searchType:value})}
                 >
+                    {/* // 注意value的大小写不要大写 */}
                     <Option value="productName">按名称搜索</Option>
-                    <Option value="ProductDesc">按描述搜索</Option>
+                    <Option value="productDesc">按描述搜索</Option> 
                 </Select>
                 <Input 
                 style={{width:'150px',margin:"0 15px"}} 
