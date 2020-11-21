@@ -25,7 +25,7 @@ class Header extends Component {
     }
     getWeather = async ()=>{
         // 获取天气图片的url与天气状况信息
-        const {dayPictureUrl,weather} = await reqWeather("南京")
+        const {dayPictureUrl,weather} = await reqWeather('北京')
         // 更新状态
         this.setState({dayPictureUrl,weather})
     }

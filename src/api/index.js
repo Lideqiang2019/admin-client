@@ -37,6 +37,10 @@ export const reqCategory = (categoryId) => ajax('/manage/category/info', {catego
 // 更新商品的状态(上架/下架)
 export const reqUpdateStatus = (productId, status) => ajax('/manage/product/updateStatus', {productId, status}, 'POST')
 
+// 删除图片
+export const reqDeleteImg = (name)=>ajax('/manage/img/delete',{name},'POST')
+// 添加或者更新product信息,一定要加上（）,否则会报错
+export const reqAddOrUpdateProduct = (product) => ajax('/manage/product/' + ( product._id?'update':'add'), product, 'POST')
 /**
  * json请求的接口函数
  */

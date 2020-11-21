@@ -69,7 +69,7 @@ export default class ProductHome extends Component {
                     return(
                         <span>
                             <LinkButton onClick={()=>this.props.history.push('/product/details',{product})}>详情</LinkButton>
-                            <LinkButton>修改</LinkButton>
+                            <LinkButton onClick={()=>this.props.history.push('/product/addupdate',product)}>修改</LinkButton>
                         </span>
                     )
                 }
@@ -92,13 +92,13 @@ export default class ProductHome extends Component {
         this.pageNum = pageNum // 保存pageNum, 让其它方法可以看到
         this.setState({loading:true}) // 正在加载
         const {searchName,searchType} = this.state
-        console.log("search",searchName,searchType)
+        // console.log("search",searchName,searchType)
         let result;
         if(searchName){
             // 如果有要搜索的内容
             // result = await reqSearchProducts({pageNum,pageSize:PAGE_SIZE,searchName,searchType})
             result = await reqSearchProducts({pageNum, pageSize: PAGE_SIZE, searchName, searchType})
-            console.log("result",result)
+            // console.log("result",result)
             // debugger
         }else{
             result = await reqProducts(pageNum,PAGE_SIZE)

@@ -20,7 +20,8 @@ export default class Details extends Component {
         // 得到当前商品的分类ID
         const {pCategoryId,categoryId} = this.props.location.state.product
         if(pCategoryId==='0'){ // 如果是一级分类下的商品
-            const result = await reqCategory(pCategoryId)
+            const result = await reqCategory(categoryId)
+            // debugger
             const cName1 = result.data.name
             this.setState({cName1})
         }else{
@@ -71,13 +72,14 @@ export default class Details extends Component {
                     </Item>
                     <Item>
                         <span className="left">所属分类:</span>
-                        <span>{cName1}{cName1?'-->'+cName2:''}</span>
+                        <span>{cName1}{cName2?('-->'+cName2):''}</span>
                     </Item>
                     <Item>
                         <span className="left">商品图片：</span>
                         {
-                            imgs.map(img=>
-                                <img 
+                            imgs.map((img,key)=>
+                                <img
+                                key={key} 
                                 src={BASE_IMG_URL+img} 
                                 alt="img"
                                 className="img"
