@@ -35,7 +35,8 @@ export default class Login extends Component {
             message.success("登录成功")
             // 保存登录状态
             memoryUtils.user = result.data;
-            storageUtils.saveUser(result.data); //保存到localstorage
+            storageUtils.saveUser(result.data); 
+            //保存到localstorage
             // 跳转到管理界面 (不需要再回退回到登陆)
             this.props.history.replace('/')
         }else{

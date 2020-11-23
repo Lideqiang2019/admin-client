@@ -38,7 +38,7 @@ class Header extends Component {
                 title = item.title
             }else if(item.children){
                 // 如果有二级memu，则找二级下的title
-                const cItem = item.children.find(cItem=>cItem.key===pathname)
+                const cItem = item.children.find(cItem=>pathname.indexOf(cItem.key)===0)
                 // 如果有值才说明有匹配的
                 if(cItem) {
                     // 取出它的title
