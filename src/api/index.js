@@ -50,6 +50,14 @@ export const reqAddRole = (roleName)=>ajax('/manage/role/add',{roleName},'POST')
 
 // 更新用户角色列表
 export const reqUpdateRole = (role)=>ajax('/manage/role/update',role,'POST')
+
+export const reqUserList = ()=>ajax('/manage/user/list')
+
+// 删除用户
+export const reqDelelteUser = (userId)=>ajax('/manage/user/delete',{userId},'POST')
+
+// 添加用户
+export const reqAddUser = (user)=>ajax('/manage/user/add',user,'POST')
 /**
  * json请求的接口函数
  */
