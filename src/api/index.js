@@ -58,6 +58,9 @@ export const reqDelelteUser = (userId)=>ajax('/manage/user/delete',{userId},'POS
 
 // 添加用户
 export const reqAddUser = (user)=>ajax('/manage/user/add',user,'POST')
+// 添加或者更新User信息,一定要加上（）,否则会报错
+export const reqAddOrUpdateUser = (user) => ajax('/manage/user/' + ( user._id?'update':'add'), user, 'POST')
+
 /**
  * json请求的接口函数
  */
