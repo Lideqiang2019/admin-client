@@ -41,6 +41,15 @@ export const reqUpdateStatus = (productId, status) => ajax('/manage/product/upda
 export const reqDeleteImg = (name)=>ajax('/manage/img/delete',{name},'POST')
 // 添加或者更新product信息,一定要加上（）,否则会报错
 export const reqAddOrUpdateProduct = (product) => ajax('/manage/product/' + ( product._id?'update':'add'), product, 'POST')
+
+// 获取用户角色列表
+export const reqRoles = ()=>ajax('/manage/role/list')
+
+// 添加用户角色列表
+export const reqAddRole = (roleName)=>ajax('/manage/role/add',{roleName},'POST')
+
+// 更新用户角色列表
+export const reqUpdateRole = (role)=>ajax('/manage/role/update',role,'POST')
 /**
  * json请求的接口函数
  */
