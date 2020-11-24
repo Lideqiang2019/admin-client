@@ -24,7 +24,7 @@ export default class Home extends Component {
         const { isVisited } = this.state
         return (
             <div className="home">
-                {/* <Card
+                <Card
                     className="home-card"
                     title="商品总量"
                     extra={<QuestionCircleOutlined />}
@@ -53,10 +53,10 @@ export default class Home extends Component {
                         prefix="周同比"
                         suffix={<div>%<ArrowDownOutlined /></div>}
                     />
-                </Card> */}
-                {/* <Line /> */}
+                </Card>
+                <Line />
 
-                {/* <Card
+                <Card
                     className='home-content'
                     title={
                         <div className="home-menu">
@@ -90,7 +90,7 @@ export default class Home extends Component {
                         </Timeline>
                     </Card>
                 </Card> 
-             */}
+            
             </div >
         )
     }
