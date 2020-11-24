@@ -72,7 +72,7 @@ export default class User extends Component {
     }
     showUpdateUser = (user) => {
         this.user = user
-        console.log("更新用户")
+        // console.log("更新用户")
         this.setState({
             showState: true
         })
@@ -97,7 +97,6 @@ export default class User extends Component {
                 message.error(result.msg)
             }
         })
-
     }
 
     getUsers = async () => {

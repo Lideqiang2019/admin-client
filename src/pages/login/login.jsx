@@ -29,7 +29,7 @@ export default class Login extends Component {
         // })
         // 注意：改了package.json配置一定要重启项目，否则会报错
         const result = await reqLogin(username,password)
-        console.log("result",result)
+        // console.log("result",result)
         if(result.status===0){
             // 提示登录成功
             message.success("登录成功")
@@ -67,8 +67,8 @@ export default class Login extends Component {
                             name="username"
                             rules={[{ required: true, message: 'Please input your Username!' },
                             { min: 4, message: '用户名必须大于4!' },
-                            { max: 8, message: '用户名必须小于8!' },
-                            { pattern: /^[a-zA-Z_]+$/, message: '用户名必须是英文、数组或者下划线组成!' },
+                            { max: 16, message: '用户名必须小于8!' },
+                            { pattern: /^[a-zA-Z_0-9]+$/, message: '用户名必须是英文、数组或者下划线组成!' },
                         ]}
                         >
                             <Input prefix={<UserOutlined className="site-form-item-icon" style={{color:'rgba(0,0,0,.5)'}}/>} placeholder="用户名" />

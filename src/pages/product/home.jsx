@@ -163,6 +163,7 @@ export default class ProductHome extends Component {
                         total:total,
                         defaultPageSize: PAGE_SIZE,
                         showQuickJumper: true,
+                        current:this.pageNum,
                         onChange:this.getProducts
                     }}
                 />

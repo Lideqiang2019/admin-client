@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { Link,withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { Menu } from 'antd';
 import menuList from '../../config/menuConfig'
 import './left-nav.less'
 import logo from '../../assets/images/logo.png'
+import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
+
 const { SubMenu } = Menu;
 
 class LeftNav extends Component {
@@ -83,7 +86,7 @@ class LeftNav extends Component {
     //                             </Link>
     //                             </Menu.Item>
     //                         )
-                        
+
     //                 default:
     //                     return(
     //                         <Menu.Item key={item.key}>
@@ -94,7 +97,7 @@ class LeftNav extends Component {
     //                       </Menu.Item>
     //                     )
     //             }
-                
+
     //         }else{
     //             // 查找一个与当前请求路径匹配的子Item
     //             const pathname = this.props.location.pathname;
@@ -135,61 +138,82 @@ class LeftNav extends Component {
     //                 default:
     //                     break;
     //             }
-                
+
     //         }
     //     })
     // }
-    getMenuNodes = (menuList)=>{
-        return menuList.map((item)=>{
-            if(!item.children){
-               return(
-                    <Menu.Item key={item.key}>
-                    <Link to={item.key}>
-                        <item.icon1/>
-                        <span>{item.title}</span>
-                    </Link>
-                    </Menu.Item>
-                )
-            }else{
-                // 查找一个与当前请求路径匹配的子Item
-                const pathname = this.props.location.pathname;
-                // const cItem = item.children.find(cItem=>cItem.key===pathname)此为精准匹配，
-                //对于/product来说，其子路由/product/details也应该选中
-                const cItem = item.children.find(cItem=>pathname.indexOf(cItem.key)===0)
-                // 如果存在, 说明当前item的子列表需要打开
-                if (cItem) {
-                    this.openKey = item.key
-                }
-                return(
-                    
-                        <SubMenu
-                        key={item.key}
-                        title={
-                        <span>
-                            <item.icon1 />
-                            <span>{item.title}</span>
-                        </span>
-                        }
-                    >
-                        {this.getMenuNodes(item.children)}
-                    </SubMenu>
+    hasAuth = (item) => {
+        /**
+         1. 用户都可以看到首页，设置为isPublic
+         2. 超级管理员，可以看到所有权限，username为'admin'
+         3. 当前用户包括的role
+         */
+        const {user} = memoryUtils
+        const {username,role} = user
+        const menus = role.menus
+        if(username==='admin' || item.isPublic || menus.indexOf(item.key)!==-1){
+            // menus中能找到item.key即可
+            return true
+        }else if(item.children){
+            // 但是有的可能有二级路由，而一级路由的menus没有包含item.key，而应该在item.children中找
+            return !!item.children.find(cItem=>menus.indexOf(cItem.key)!==-1)
+        }
+    }
+
+    getMenuNodes = (menuList) => {
+        return menuList.map((item) => {
+            // 满足条件才能拿到item
+            if (this.hasAuth(item)) {
+                if (!item.children) {
+                    return (
+                        <Menu.Item key={item.key}>
+                            <Link to={item.key}>
+                                <item.icon1 />
+                                <span>{item.title}</span>
+                            </Link>
+                        </Menu.Item>
                     )
-               
-                
+                } else {
+                    // 查找一个与当前请求路径匹配的子Item
+                    const pathname = this.props.location.pathname;
+                    // const cItem = item.children.find(cItem=>cItem.key===pathname)此为精准匹配，
+                    //对于/product来说，其子路由/product/details也应该选中
+                    const cItem = item.children.find(cItem => pathname.indexOf(cItem.key) === 0)
+                    // 如果存在, 说明当前item的子列表需要打开
+                    if (cItem) {
+                        this.openKey = item.key
+                    }
+                    return (
+
+                        <SubMenu
+                            key={item.key}
+                            title={
+                                <span>
+                                    <item.icon1 />
+                                    <span>{item.title}</span>
+                                </span>
+                            }
+                        >
+                            {this.getMenuNodes(item.children)}
+                        </SubMenu>
+                    )
+                }
+
             }
+
         })
     }
     /*
      在第一次render()之前执行一次
      为第一个render()准备数据(必须同步的)
    */
-    componentWillMount(){
+    componentWillMount() {
         this.menuNodes = this.getMenuNodes(menuList);
     }
     render() {
         let pathname = this.props.location.pathname;
         const openKey = this.openKey;
-        if(pathname.indexOf("/product")===0){
+        if (pathname.indexOf("/product") === 0) {
             pathname = "/product"
         }
         return (

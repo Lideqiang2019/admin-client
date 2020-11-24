@@ -16,6 +16,7 @@ import UpdateRole from './update-form'
 import {reqAddRole,reqUpdateRole} from '../../api'
 import {formateTime} from '../../utils/dateUtils'
 import memoryUtils from '../../utils/memoryUtils' 
+import storageUtils from "../../utils/storageUtils";
 
 export default class Role extends Component {
     
@@ -117,7 +118,16 @@ export default class Role extends Component {
 
         const result = await reqUpdateRole(role)
         if(result.status===0){
-            message.success("更新用户权限成功！")
+            // 当前用户
+            if(memoryUtils.user.role_id===role._id){
+                message.success("更新当前用户权限成功！")
+                // 将storage中的user信息清除
+                memoryUtils.user = {}
+                storageUtils.removeUser()
+                this.props.history.replace('/login')
+            }else{
+                message.success("更新用户权限成功！")
+            }
         }else{
             message.error("更新用户权限失败！")
         }
@@ -148,7 +158,8 @@ export default class Role extends Component {
                     dataSource={roles}
                     rowSelection={{
                         type: 'radio',
-                        selectedRowKeys:[role._id]
+                        selectedRowKeys:[role._id],
+                        onSelect: (role)=>this.setState({role})
                     }}
                     onRow={this.onRow}
                     pagination={{ defaultPageSize: PAGE_SIZE }}
