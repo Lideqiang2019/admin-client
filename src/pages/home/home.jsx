@@ -8,11 +8,15 @@ import Bar from './bar'
 import {
     Card,
     Statistic,
-    Timeline
+    Timeline,
+    DatePicker
 } from 'antd'
+import moment from 'moment';
 
 import { ArrowUpOutlined, ArrowDownOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY/MM/DD';
 export default class Home extends Component {
     state = {
         isVisited: true
@@ -65,6 +69,10 @@ export default class Home extends Component {
                             <span className={isVisited ? "" : 'home-menu-active'} onClick={this.handleChange(false)}>销售量</span>
                         </div>
                     }
+                    extra={<RangePicker
+                        defaultValue={[moment('2020/11/10', dateFormat), moment('2019/11/24', dateFormat)]}
+                        format={dateFormat}
+                      />}
                 >
                     <Card
                         className="home-table-left"
