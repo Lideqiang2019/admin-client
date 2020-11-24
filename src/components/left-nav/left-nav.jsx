@@ -6,6 +6,8 @@ import './left-nav.less'
 import logo from '../../assets/images/logo.png'
 import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
+import { connect } from 'react-redux'
+import {setTitle} from '../../redux/actions'
 
 const { SubMenu } = Menu;
 
@@ -148,34 +150,40 @@ class LeftNav extends Component {
          2. 超级管理员，可以看到所有权限，username为'admin'
          3. 当前用户包括的role
          */
-        const {user} = memoryUtils
-        const {username,role} = user
+        const { user } = memoryUtils
+        const { username, role } = user
         const menus = role.menus
-        if(username==='admin' || item.isPublic || menus.indexOf(item.key)!==-1){
+        if (username === 'admin' || item.isPublic || menus.indexOf(item.key) !== -1) {
             // menus中能找到item.key即可
             return true
-        }else if(item.children){
+        } else if (item.children) {
             // 但是有的可能有二级路由，而一级路由的menus没有包含item.key，而应该在item.children中找
-            return !!item.children.find(cItem=>menus.indexOf(cItem.key)!==-1)
+            return !!item.children.find(cItem => menus.indexOf(cItem.key) !== -1)
         }
     }
 
     getMenuNodes = (menuList) => {
         return menuList.map((item) => {
+            // 查找一个与当前请求路径匹配的子Item
+            const pathname = this.props.location.pathname;
             // 满足条件才能拿到item
             if (this.hasAuth(item)) {
                 if (!item.children) {
+                    // 判断item是否是当前对应的item
+                    if (item.key === pathname || pathname.indexOf(item.key) === 0) {
+                        // 更新redux中的headerTitle状态
+                        this.props.setTitle(item.title)
+                    }
                     return (
                         <Menu.Item key={item.key}>
-                            <Link to={item.key}>
+                            <Link to={item.key} onClick={()=>this.props.setTitle(item.title)}>
                                 <item.icon1 />
                                 <span>{item.title}</span>
                             </Link>
                         </Menu.Item>
                     )
                 } else {
-                    // 查找一个与当前请求路径匹配的子Item
-                    const pathname = this.props.location.pathname;
+
                     // const cItem = item.children.find(cItem=>cItem.key===pathname)此为精准匹配，
                     //对于/product来说，其子路由/product/details也应该选中
                     const cItem = item.children.find(cItem => pathname.indexOf(cItem.key) === 0)
@@ -290,4 +298,11 @@ class LeftNav extends Component {
     }
 }
 
-export default withRouter(LeftNav)
+export default connect(
+    state => ({
+        headTitle: state.headTitle
+    }),
+    {
+        setTitle
+    }
+)(withRouter(LeftNav))

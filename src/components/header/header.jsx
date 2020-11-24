@@ -9,6 +9,8 @@ import {formateTime} from '../../utils/dateUtils';
 import {reqWeather} from '../../api/index';
 import menuList from '../../config/menuConfig';
 import LinkButton from '../link-button/link-button'
+import {connect} from 'react-redux'
+import {setTitle} from '../../redux/actions'
 
 class Header extends Component {
     state = {
@@ -29,25 +31,25 @@ class Header extends Component {
         // 更新状态
         this.setState({dayPictureUrl,weather})
     }
-    getTitle = ()=>{
-        // 找到和当前访问的路由对应的title
-        const pathname = this.props.location.pathname;
-        let title;
-        menuList.forEach(item=>{
-            if(item.key===pathname){
-                title = item.title
-            }else if(item.children){
-                // 如果有二级memu，则找二级下的title
-                const cItem = item.children.find(cItem=>pathname.indexOf(cItem.key)===0)
-                // 如果有值才说明有匹配的
-                if(cItem) {
-                    // 取出它的title
-                     title = cItem.title
-                }
-            }
-        })
-        return title;
-    }
+    // getTitle = ()=>{
+    //     // 找到和当前访问的路由对应的title
+    //     const pathname = this.props.location.pathname;
+    //     let title;
+    //     menuList.forEach(item=>{
+    //         if(item.key===pathname){
+    //             title = item.title
+    //         }else if(item.children){
+    //             // 如果有二级memu，则找二级下的title
+    //             const cItem = item.children.find(cItem=>pathname.indexOf(cItem.key)===0)
+    //             // 如果有值才说明有匹配的
+    //             if(cItem) {
+    //                 // 取出它的title
+    //                  title = cItem.title
+    //             }
+    //         }
+    //     })
+    //     return title;
+    // }
 
     logout =()=>{
         Modal.confirm({
@@ -80,7 +82,8 @@ class Header extends Component {
     render() {
         const username = memoryUtils.user.username;
         const {currentTime,dayPictureUrl,weather} = this.state;
-        const title = this.getTitle()
+        // const title = this.getTitle()
+        const title = this.props.headTitle
         return (
                <div className="header">
                    <div className='header-top'>
@@ -101,4 +104,9 @@ class Header extends Component {
     }
 }
 
-export default withRouter(Header)
+export default connect(
+    state=>({
+        headTitle:state.headTitle
+    }),
+    
+)(withRouter(Header))
